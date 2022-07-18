@@ -20,8 +20,8 @@ class Repository {
     return tasks.toList();
   }
 
-  void addTask(final String title, String description) {
-    _tasks.add(Task(title, description, false));
+  Future<void> addTask(final String title, String description) async {
+    await _tasks.add(Task(title, description, false));
   }
 
   Future<void> removeTask(final String title) async {

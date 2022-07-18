@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../model/task.dart';
 import 'bloc/home_bloc.dart';
+import 'bloc/home_provider.dart';
 import 'new_task.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +21,12 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     bloc = HomeBloc();
     bloc.initValues();
+
+    bloc.isAddCompletedStream.listen((event) {
+      if (event) {
+        Navigator.pop(context);
+      }
+    });
   }
 
   @override
@@ -32,9 +39,13 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         backgroundColor: Colors.green,
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const CreateNewTask()));
+        onPressed: () async {
+          final result = await showDialog<String>(
+              context: context,
+              builder: (context) => Dialog(
+                  child: HomeProvider(bloc, child: const CreateNewTask())));
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder: (context) => const CreateNewTask()));
         },
       ),
     );

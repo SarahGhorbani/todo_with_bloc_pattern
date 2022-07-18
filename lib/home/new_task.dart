@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'bloc/home_bloc.dart';
+import 'bloc/home_provider.dart';
+
 class CreateNewTask extends StatefulWidget {
   const CreateNewTask({Key? key}) : super(key: key);
 
@@ -9,28 +12,41 @@ class CreateNewTask extends StatefulWidget {
 }
 
 class _CreateNewTaskState extends State<CreateNewTask> {
-  late final _inputController;
+  late HomeBloc bloc;
+  late var _titleController = TextEditingController();
+  late var _descController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _inputController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('add new task'),
+    // super.build(context);
+    bloc = HomeProvider.of(context);
+    return Column(
+      children: [
+        TextFormField(
+          onChanged: (value) {
+            _titleController.text = value;
+          },
+          controller: _titleController,
+          decoration: const InputDecoration(hintText: "title"),
         ),
-        body: Column(
-          children: [
-            Text('title'),
-            TextField(
-              controller: _inputController,
-            ),
-            ElevatedButton(onPressed: () {}, child: Text('add'))
-          ],
-        ));
+        TextFormField(
+          onChanged: (value) {
+            _descController.text = value;
+          },
+          controller: _descController,
+          decoration: const InputDecoration(hintText: "desc"),
+        ),
+        ElevatedButton(
+            onPressed: () {
+              // bloc.add
+            },
+            child: const Text('add'))
+      ],
+    );
   }
 }
