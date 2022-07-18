@@ -1,15 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_with_bloc_pattern/home/new_task.dart';
 
-class HomePage extends StatelessWidget {
+import '../model/task.dart';
+import 'bloc/home_bloc.dart';
+import 'new_task.dart';
+
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late HomeBloc bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc = HomeBloc();
+    bloc.initValues();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ToDo jhgkjfdhg'),
+        title: const Text('ToDo app'),
       ),
       body: _body(),
       floatingActionButton: FloatingActionButton(
@@ -24,18 +41,26 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _body() {
-    return ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text('data'),
-            trailing: Checkbox(
-              value: true,
-              onChanged: (value) {
-                //check and uncheck task
-              },
-            ),
-          );
+    return StreamBuilder<List<Task>>(
+        stream: bloc.taskStream,
+        builder: (context, tasks) {
+          if (!tasks.hasData) {
+            return Container();
+          } else {
+            return ListView.builder(
+                itemCount: tasks.requireData.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(tasks.requireData[index].title),
+                    trailing: Checkbox(
+                      value: tasks.requireData[index].isDone,
+                      onChanged: (value) {
+                        //check and uncheck task
+                      },
+                    ),
+                  );
+                });
+          }
         });
   }
 }

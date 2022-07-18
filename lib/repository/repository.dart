@@ -2,12 +2,17 @@ import 'package:hive/hive.dart';
 
 import '../model/task.dart';
 
-class Repository{
+class Repository {
   late Box<Task> _tasks;
 
-  Future<void> init() async{
+  Future<void> init() async {
     Hive.registerAdapter(TaskAdapter());
-    _tasks =await Hive.openBox<Task>('tasks');
+    _tasks = await Hive.openBox<Task>('tasks');
+
+    await _tasks.clear();
+
+    await _tasks.add(Task('task1', 'desc1', true));
+    await _tasks.add(Task('task2', 'desc2', false));
   }
 
   List<Task> getTasks() {
@@ -15,18 +20,20 @@ class Repository{
     return tasks.toList();
   }
 
-  void addTask(final String task) {
-    _tasks.add(Task( task, false));
+  void addTask(final String title, String description) {
+    _tasks.add(Task(title, description, false));
   }
 
-  Future<void> removeTask(final String task) async {
-    final taskToRemove = _tasks.values.firstWhere((element) => element.task == task);
+  Future<void> removeTask(final String title) async {
+    final taskToRemove =
+        _tasks.values.firstWhere((element) => element.title == title);
     await taskToRemove.delete();
   }
 
-  Future<void> updateTask(final String task, final String username) async {
-    final taskToEdit = _tasks.values.firstWhere((element) => element.task == task);
+  Future<void> updateTask(final String title, final String description) async {
+    final taskToEdit =
+        _tasks.values.firstWhere((element) => element.title == title);
     final index = taskToEdit.key as int;
-    await _tasks.put(index, Task(task, !taskToEdit.completed));
+    await _tasks.put(index, Task(title, description, !taskToEdit.isDone));
   }
 }
