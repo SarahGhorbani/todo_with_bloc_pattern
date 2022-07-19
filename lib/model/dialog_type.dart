@@ -1,0 +1,3 @@
+enum DialogType{
+  add, update
+}

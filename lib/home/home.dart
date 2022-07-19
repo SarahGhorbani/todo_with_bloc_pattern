@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_with_bloc_pattern/model/dialog_type.dart';
 
 import '../model/task.dart';
 import 'bloc/home_bloc.dart';
@@ -43,7 +43,10 @@ class _HomePageState extends State<HomePage> {
           final result = await showDialog<String>(
               context: context,
               builder: (context) => Dialog(
-                  child: HomeProvider(bloc, child: const CreateNewTask())));
+                  child: HomeProvider(bloc,
+                      child: const CreateNewTask(
+                        dialogType: DialogType.add,
+                      ))));
           // Navigator.push(context,
           //     MaterialPageRoute(builder: (context) => const CreateNewTask()));
         },
@@ -61,13 +64,30 @@ class _HomePageState extends State<HomePage> {
             return ListView.builder(
                 itemCount: tasks.requireData.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(tasks.requireData[index].title),
-                    trailing: Checkbox(
-                      value: tasks.requireData[index].isDone,
-                      onChanged: (value) {
-                        //check and uncheck task
-                      },
+                  return GestureDetector(
+                    onLongPress: (){
+                      bloc.removeTask(tasks.requireData[index].id);
+                    },
+                    onTap: () async {
+                      final result = await showDialog<String>(
+                          context: context,
+                          builder: (context) => Dialog(
+                              child: HomeProvider(bloc,
+                                  child: CreateNewTask(
+                                    task: tasks.requireData[index],
+                                    dialogType: DialogType.update,
+                                  ))));
+                    },
+                    child: ListTile(
+                      title: Text(tasks.requireData[index].title),
+                      trailing: Checkbox(
+                        value: tasks.requireData[index].isDone,
+                        onChanged: (value) {
+                          bloc.tasksValue[index].isDone = value ?? false;
+                          bloc.doneTask(bloc.tasksValue[index]);
+                          //check and uncheck task
+                        },
+                      ),
                     ),
                   );
                 });

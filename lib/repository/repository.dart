@@ -11,8 +11,8 @@ class Repository {
 
     await _tasks.clear();
 
-    await _tasks.add(Task('task1', 'desc1', true));
-    await _tasks.add(Task('task2', 'desc2', false));
+    await _tasks.add(Task(1,'task1', 'desc1', true));
+    await _tasks.add(Task(2,'task2', 'desc2', false));
   }
 
   List<Task> getTasks() {
@@ -21,19 +21,20 @@ class Repository {
   }
 
   Future<void> addTask(final String title, String description) async {
-    await _tasks.add(Task(title, description, false));
+    int id = _tasks.length +1;
+    await _tasks.add(Task(id,title, description, false));
   }
 
-  Future<void> removeTask(final String title) async {
+  Future<void> removeTask(final int id) async {
     final taskToRemove =
-        _tasks.values.firstWhere((element) => element.title == title);
+        _tasks.values.firstWhere((element) => element.id == id);
     await taskToRemove.delete();
   }
 
-  Future<void> updateTask(final String title, final String description) async {
+  Future<void> updateTask(final Task task) async {
     final taskToEdit =
-        _tasks.values.firstWhere((element) => element.title == title);
+        _tasks.values.firstWhere((element) => element.id == task.id);
     final index = taskToEdit.key as int;
-    await _tasks.put(index, Task(title, description, !taskToEdit.isDone));
+    await _tasks.put(index, task);
   }
 }
