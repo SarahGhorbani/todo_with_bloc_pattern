@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo_with_bloc_pattern/model/dialog_type.dart';
+import 'package:todo_with_bloc_pattern/model/tag/tag.dart';
+import 'package:todo_with_bloc_pattern/widgets/filter_list.dart';
 
-import '../../model/task.dart';
+import '../../model/task/task.dart';
 import '../../widgets/new_task.dart';
 import 'bloc/home_bloc.dart';
 import 'bloc/home_provider.dart';
@@ -30,6 +32,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -49,15 +57,29 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton:
           Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         FloatingActionButton(
+          child: const Icon(Icons.keyboard_return_rounded),
+          onPressed: () {
+            bloc.getTasks();
+          },
+        ),
+        FloatingActionButton(
           child: const Icon(Icons.filter_alt_outlined),
           onPressed: () async {
-            final result = await showDialog<String>(
+            await showDialog<String>(
                 context: context,
                 builder: (context) => Dialog(
                     child: HomeProvider(bloc,
-                        child: const CreateNewTask(
-                          dialogType: DialogType.add,
-                        ))));
+                        child: StreamBuilder<List<Tag>>(
+                            stream: bloc.tagStream,
+                            builder: (context, tags) {
+                              if (!tags.hasData) {
+                                return Container();
+                              } else {
+                                return HomeProvider(bloc,
+                                    child: FilterListWidget(
+                                        tags: tags.requireData));
+                              }
+                            }))));
           },
         ),
         FloatingActionButton(

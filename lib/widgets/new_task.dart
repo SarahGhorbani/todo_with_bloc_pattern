@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_with_bloc_pattern/model/dialog_type.dart';
-import 'package:todo_with_bloc_pattern/model/task.dart';
+import 'package:todo_with_bloc_pattern/model/task/task.dart';
 
 import '../screens/home/bloc/home_bloc.dart';
 import '../screens/home/bloc/home_provider.dart';
@@ -63,9 +63,9 @@ class _CreateNewTaskState extends State<CreateNewTask> {
           controller: _descController,
           decoration: const InputDecoration(hintText: "desc"),
         ),
-        Wrap(
-          children: _generateChildren(),
-        ),
+        // Wrap(
+        //   children: _generateChildren(),
+        // ),
         ElevatedButton(
             onPressed: () {
               onPressedButton(widget.dialogType);

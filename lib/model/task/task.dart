@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
-import 'package:todo_with_bloc_pattern/model/tag.dart';
+import 'package:todo_with_bloc_pattern/model/tag/tag.dart';
 part 'task.g.dart';
 
 @HiveType(typeId: 1)
-class Task extends HiveObject{
+class Task extends HiveObject {
   @HiveField(0)
   final int id;
   @HiveField(1)
@@ -15,6 +15,6 @@ class Task extends HiveObject{
   @HiveField(4)
   late List<Tag>? tags;
 
-
-  Task(this.id, this.title,this.description, this.isDone,{required this.tags} );
+  Task(this.id, this.title, this.description, this.isDone,
+      {required this.tags});
 }

@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
+part 'tag.g.dart';
 
-class Tag{
+@HiveType(typeId: 2)
+class Tag extends HiveObject{
   @HiveField(0)
   final int id;
   @HiveField(1)
