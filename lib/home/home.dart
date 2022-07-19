@@ -27,13 +27,24 @@ class _HomePageState extends State<HomePage> {
         Navigator.pop(context);
       }
     });
+    // showSnackBarMessage();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ToDo app'),
+        title: StreamBuilder<List<Task>>(
+            stream: bloc.remainingTaskStream,
+            builder: (context, remainingTasks) {
+              if (!remainingTasks.hasData) {
+                return const Text('ToDos');
+              } else {
+                String remainingCounter =
+                    remainingTasks.requireData.length.toString();
+                return Text('remaining ToDos: $remainingCounter');
+              }
+            }),
       ),
       body: _body(),
       floatingActionButton: FloatingActionButton(
@@ -65,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                 itemCount: tasks.requireData.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onLongPress: (){
+                    onLongPress: () {
                       bloc.removeTask(tasks.requireData[index].id);
                     },
                     onTap: () async {
@@ -93,5 +104,10 @@ class _HomePageState extends State<HomePage> {
                 });
           }
         });
+  }
+
+  void showSnackBarMessage() {
+    var snackBar = const SnackBar(content: Text('Hello World'));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
