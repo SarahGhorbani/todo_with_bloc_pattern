@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:todo_with_bloc_pattern/model/dialog_type.dart';
 import 'package:todo_with_bloc_pattern/model/task.dart';
 
-import 'bloc/home_bloc.dart';
-import 'bloc/home_provider.dart';
+import '../screens/home/bloc/home_bloc.dart';
+import '../screens/home/bloc/home_provider.dart';
 
 class CreateNewTask extends StatefulWidget {
   const CreateNewTask({Key? key, this.task, required this.dialogType})
       : super(key: key);
   final Task? task;
   final DialogType dialogType;
+
   @override
   _CreateNewTaskState createState() => _CreateNewTaskState();
 }
@@ -19,6 +20,13 @@ class _CreateNewTaskState extends State<CreateNewTask> {
   late HomeBloc bloc;
   late var _titleController = TextEditingController();
   late var _descController = TextEditingController();
+
+  List<String> defaultTags = [
+    'book',
+    'work',
+    'chilling',
+    'sleep',
+  ];
 
   @override
   void initState() {
@@ -55,6 +63,9 @@ class _CreateNewTaskState extends State<CreateNewTask> {
           controller: _descController,
           decoration: const InputDecoration(hintText: "desc"),
         ),
+        Wrap(
+          children: _generateChildren(),
+        ),
         ElevatedButton(
             onPressed: () {
               onPressedButton(widget.dialogType);
@@ -86,5 +97,17 @@ class _CreateNewTaskState extends State<CreateNewTask> {
         break;
     }
     return text;
+  }
+
+  List<Widget> _generateChildren() {
+    List<Widget> items = [];
+    for (int i = 0; i < defaultTags.length; i++) {
+      items.add(_generateChips(i));
+    }
+    return items;
+  }
+
+  Widget _generateChips(int index) {
+    return Chip(label: Text(defaultTags[index]));
   }
 }

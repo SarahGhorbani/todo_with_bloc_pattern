@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo_with_bloc_pattern/model/dialog_type.dart';
 
-import '../model/task.dart';
+import '../../model/task.dart';
+import '../../widgets/new_task.dart';
 import 'bloc/home_bloc.dart';
 import 'bloc/home_provider.dart';
-import 'new_task.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
         Navigator.pop(context);
       }
     });
-    // showSnackBarMessage();
   }
 
   @override
@@ -47,21 +46,33 @@ class _HomePageState extends State<HomePage> {
             }),
       ),
       body: _body(),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.green,
-        onPressed: () async {
-          final result = await showDialog<String>(
-              context: context,
-              builder: (context) => Dialog(
-                  child: HomeProvider(bloc,
-                      child: const CreateNewTask(
-                        dialogType: DialogType.add,
-                      ))));
-          // Navigator.push(context,
-          //     MaterialPageRoute(builder: (context) => const CreateNewTask()));
-        },
-      ),
+      floatingActionButton:
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        FloatingActionButton(
+          child: const Icon(Icons.filter_alt_outlined),
+          onPressed: () async {
+            final result = await showDialog<String>(
+                context: context,
+                builder: (context) => Dialog(
+                    child: HomeProvider(bloc,
+                        child: const CreateNewTask(
+                          dialogType: DialogType.add,
+                        ))));
+          },
+        ),
+        FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () async {
+            await showDialog<String>(
+                context: context,
+                builder: (context) => Dialog(
+                    child: HomeProvider(bloc,
+                        child: const CreateNewTask(
+                          dialogType: DialogType.add,
+                        ))));
+          },
+        ),
+      ]),
     );
   }
 
@@ -104,10 +115,5 @@ class _HomePageState extends State<HomePage> {
                 });
           }
         });
-  }
-
-  void showSnackBarMessage() {
-    var snackBar = const SnackBar(content: Text('Hello World'));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

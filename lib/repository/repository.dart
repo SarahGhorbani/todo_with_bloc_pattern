@@ -11,8 +11,8 @@ class Repository {
 
     await _tasks.clear();
 
-    await _tasks.add(Task(1,'task1', 'desc1', true));
-    await _tasks.add(Task(2,'task2', 'desc2', false));
+    await _tasks.add(Task(1,'task1', 'desc1', true, tags: []));
+    await _tasks.add(Task(2,'task2', 'desc2', false, tags: []));
   }
 
   List<Task> getTasks() {
@@ -22,7 +22,7 @@ class Repository {
 
   Future<void> addTask(final String title, String description) async {
     int id = _tasks.length +1;
-    await _tasks.add(Task(id,title, description, false));
+    await _tasks.add(Task(id,title, description, false, tags: []));
   }
 
   Future<void> removeTask(final int id) async {
