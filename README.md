@@ -57,11 +57,11 @@ You will receive bonus points if:
 
 ## Manual
 
-1- add button for add new task.
-2- tap or click on each task for see details and update task.
-3- long press on each task for delete the task.
-4- tap on filter button and click on item from list for filter task.
-5- arrow button for reset list.
+- Tap on add button for add new task.
+- Tap or click on each task for see details and update task.
+- Long press on each task for delete the task.
+- Tap on filter button and click on item from list for filter task.
+- Tap on arrow button for reset list.
 
 ## How to run project?
 
