@@ -57,6 +57,7 @@ You will receive bonus points if:
 
 ## Manual
 
+How to use and test the app?
 - Tap on add button for add new task.
 - Tap or click on each task for see details and update task.
 - Long press on each task for delete the task.
