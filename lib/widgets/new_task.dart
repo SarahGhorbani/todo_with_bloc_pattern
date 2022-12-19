@@ -38,12 +38,11 @@ class _CreateNewTaskState extends State<CreateNewTask> {
     _titleController.text = widget.task?.title ?? "";
     _descController.text = widget.task?.description ?? "";
   }
-  // @override
-  // dis
+
 
   @override
   Widget build(BuildContext context) {
-    // super.build(context);
+    super.build(context);
     bloc = HomeProvider.of(context);
     return Column(
       children: [
@@ -63,9 +62,6 @@ class _CreateNewTaskState extends State<CreateNewTask> {
           controller: _descController,
           decoration: const InputDecoration(hintText: "desc"),
         ),
-        // Wrap(
-        //   children: _generateChildren(),
-        // ),
         ElevatedButton(
             onPressed: () {
               onPressedButton(widget.dialogType);
