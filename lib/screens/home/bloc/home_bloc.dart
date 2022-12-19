@@ -90,18 +90,15 @@ class HomeBloc {
   }
 
   void filterTasks(String title) {
-    log(title);
     List<Task> filteredTask = [];
     for (int i = 0; i < tasksValue.length; i++) {
-      log('i $i');
-      for (int j = 0; j < tasksValue[i].tags!.length; j++) {
-        log('j $j');
+      for (int j = 0; j < tasksValue[i].tags!.length; j++) {   
         if (tasksValue[i].tags?[j].title == title) {
           filteredTask.add(tasksValue[i]);
         }
       }
     }
-    log('setTasks');
+  
     setTasks(filteredTask);
     setIsAddCompleted(true);
   }
